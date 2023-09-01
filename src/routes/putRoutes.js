@@ -7,6 +7,7 @@ const putInitRoute = () => {
     "/actualizarEmpleado",
     limitPets,
     limitSize,
+    //validación rol,
     authorizationMiddleware,
     contentMiddlewareEquipo,
     actualizarEmpleadoController

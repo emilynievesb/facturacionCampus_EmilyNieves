@@ -43,6 +43,68 @@ appToken.use("/:colletion", async (req, res) => {
   }
 });
 
+// !generar token con rol
+// appToken.use("/:coleccion", async (req, res) => {
+//   try {
+//     const user = new Usuarios();
+//     const { usuario, contrasena } = req.body;
+//     const rol = await user.getRol(usuario, contrasena);
+//     console.log(rol);
+//     if (rol.length == 0) {
+//       return res
+//         .status(500)
+//         .send({ message: "No existe ningun usuario con esas credenciales" });
+//     } else {
+//       let inst = plainToClass(
+//         eval(`${req.params.coleccion}DTO`),
+//         {},
+//         { ignoreDecorators: true }
+//       );
+//       const encoder = new TextEncoder();
+//       const jwtconstructor = new SignJWT(
+//         Object.assign({}, Object.assign(classToPlain(inst), rol[0]))
+//       );
+//       const jwt = await jwtconstructor
+//         .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+//         .setIssuedAt()
+//         .setExpirationTime("60h")
+//         .sign(encoder.encode(process.env.JWT_PRIVATE_KEY));
+//       req.data = jwt;
+//       res.status(201).send({ status: 201, message: jwt });
+//     }
+//   } catch (error) {
+//     // console.log(error);
+//     res
+//       .status(404)
+//       .send({
+//         status: 404,
+//         message: `${req.params.coleccion} no es una opcion valida para generar el token, porfavor revisar la lista que se provee en el readme`,
+//       });
+//   }
+// });
+
+//!verificación de rol
+
+// const rolVerificatorMiddleware = async (req, res, next) => {
+//   try {
+//     let { payload } = req.data;
+//     const { rol, ...newPayload } = payload;
+//     payload = newPayload;
+//     req.data = { payload };
+//     if (rol == "admin") {
+//       next();
+//     } else {
+//       res
+//         .status(500)
+//         .send({ message: "Este usuario no esta autorizado para este proceso" });
+//     }
+//   } catch (error) {
+//     res.status(498).send({ status: 498, token: "Token caducado" });
+//   }
+// };
+
+export { rolVerificatorMiddleware };
+
 const authorizationMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization)
