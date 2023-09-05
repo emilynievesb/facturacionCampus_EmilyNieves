@@ -3,10 +3,12 @@ import {
   obtenerMedicamentosProveedor1Controller,
   obtenerMedicamentosProveedoresController,
   obtenerRecetas2023Controller,
+  obtenerVentasParacetamolController,
 } from "../controllers/getController.js";
 import { limitPets, limitSize } from "../utils/limit.js";
 import {
   authorizationMiddleware,
+  contentMiddlewareFacturaVenta,
   contentMiddlewareMedicamentos,
   contentMiddlewareRecetas,
 } from "../utils/token.js";
@@ -33,6 +35,7 @@ const getInitRoute = () => {
     contentMiddlewareMedicamentos,
     obtenerMedicamentosProveedor1Controller
   );
+  //!4. Obtener recetas médicas emitidas después del 1 de enero de 2023
   router.get(
     "/obtenerRecetas2023",
     limitPets,
@@ -41,6 +44,16 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareRecetas,
     obtenerRecetas2023Controller
+  );
+  //!5. Total de ventas del medicamento 'Paracetamol'
+  router.get(
+    "/obtenerVentasParacetamol",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareFacturaVenta,
+    obtenerVentasParacetamolController
   );
   return router;
 };
