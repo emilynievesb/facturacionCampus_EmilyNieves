@@ -18,8 +18,8 @@ app.use(express.json()); //! Middleaware para leer json
 app.use(
   "/api",
   version({
-    "1.0": v1Routes(),
-    "2.0": v2Routes(),
+    "1.0.0": v1Routes(),
+    "2.0.0": v2Routes(),
   })
 );
 
