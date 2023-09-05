@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  obtenerMedicamentosCaducen2023Controller,
   obtenerMedicamentosProveedor1Controller,
   obtenerMedicamentosProveedoresController,
   obtenerRecetas2023Controller,
@@ -17,6 +18,16 @@ import {
 
 const getInitRoute = () => {
   const router = Router();
+  //!1. Obtener todos los medicamentos con menos de 50 unidades en stock
+  router.get(
+    "/obtenerStockMenor",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareInventarios,
+    oobtenerStockMenorController
+  );
   //! 2.Listar los proveedores con su información de contacto en medicamentos
   router.get(
     "/obtenerProveedores",
@@ -57,15 +68,15 @@ const getInitRoute = () => {
     contentMiddlewareFacturaVenta,
     obtenerVentasParacetamolController
   );
-  //!1. Obtener todos los medicamentos con menos de 50 unidades en stock
+  //!6. Medicamentos que caducan antes del 1 de enero de 2024
   router.get(
-    "/obtenerStockMenor",
+    "/obtenerMedicamentosCaducan2023",
     limitPets,
     limitSize,
     //validación rol,
     authorizationMiddleware,
-    contentMiddlewareInventarios,
-    oobtenerStockMenorController
+    contentMiddlewareMedicamentos,
+    obtenerMedicamentosCaducen2023Controller
   );
   return router;
 };

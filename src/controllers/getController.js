@@ -1,4 +1,5 @@
 import {
+  obtenerMedicamentosCaducen2023,
   obtenerMedicamentosProveedor1,
   obtenerMedicamentosProveedores,
   obtenerRecetas2023,
@@ -76,10 +77,24 @@ const oobtenerStockMenorController = async (req, res, next) => {
   }
 };
 
+const obtenerMedicamentosCaducen2023Controller = async (req, res, next) => {
+  try {
+    let result;
+    const consulta = await obtenerMedicamentosCaducen2023();
+    result = consulta;
+    res.status(200).json({
+      message: `se han encontrado ${result.length} resultados`,
+      result,
+    });
+  } catch (error) {
+    res.status(500).json(error.stack);
+  }
+};
 export {
   obtenerMedicamentosProveedoresController,
   obtenerMedicamentosProveedor1Controller,
   obtenerRecetas2023Controller,
   obtenerVentasParacetamolController,
   oobtenerStockMenorController,
+  obtenerMedicamentosCaducen2023Controller,
 };

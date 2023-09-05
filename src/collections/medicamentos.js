@@ -7,7 +7,9 @@ class Medicamentos {
   nomeroLote;
   fechaCaducidad;
   precioUnidad;
-  constructor() {}
+  constructor() {
+    this.idMedicamento = "AUTORIZACIÓN TABLA MEDICAMENTOS";
+  }
   async connect() {
     try {
       const result = await connection("medicamentos");
@@ -97,6 +99,43 @@ class Medicamentos {
           {
             $match: {
               RazonSocialProveedor: "Proveedor 1",
+            },
+          },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
+  async obtenerMedicamentosVencen2024() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $match: {
+              fechaCaducidad: { $lt: new Date("2024-01-01") },
+            },
+          },
+          {
+            $project: {
+              Medicamento: {
+                IdMedicamento: "$idMedicamento",
+                NombreComercial: "$nombreComercial",
+                Lote: "$numeroLote",
+                FechaCaducidad: "$fechaCaducidad",
+                PrecioUnitario: "$precioUnidad",
+              },
             },
           },
         ])
