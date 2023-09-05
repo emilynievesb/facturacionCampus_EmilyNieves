@@ -96,5 +96,66 @@ class FacturaVenta {
       }
     }
   }
+  async obtenerMedicamentosProveedor() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $lookup: {
+              from: "recetas",
+              localField: "idReceta",
+              foreignField: "idReceta",
+              as: "DatosReceta",
+            },
+          },
+          { $unwind: "$DatosReceta" },
+          {
+            $lookup: {
+              from: "medicamentos",
+              localField: "DatosReceta.medicamentos.idMedicamento",
+              foreignField: "idMedicamento",
+              as: "DatosMedicamentos",
+            },
+          },
+          { $unwind: "$DatosMedicamentos" },
+          {
+            $lookup: {
+              from: "proveedores",
+              localField: "DatosMedicamentos.idProveedor",
+              foreignField: "idProveedor",
+              as: "DatosProveedor",
+            },
+          },
+
+          { $unwind: "$DatosProveedor" },
+          {
+            $project: {
+              RazonSocial: "$DatosProveedor.razonSocial",
+              Cantidad: "$DatosReceta.medicamentos.cantidad",
+            },
+          },
+          {
+            $group: {
+              _id: { RazonSocial: "$RazonSocial" },
+              // totalMedicamentos: { $sum: "$Cantidad" },
+            },
+          },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
 }
 export { FacturaVenta };
