@@ -1,10 +1,9 @@
-import { obtenerEmpleadoService } from "../services/getServices";
+import { obtenerMedicamentosProveedores } from "../services/getServices.js";
 
-const obtenerEmpleadosController = async (req, res, next) => {
+const obtenerMedicamentosProveedoresController = async (req, res, next) => {
   try {
-    const { id } = req.query;
     let result;
-    const consulta = await obtenerEmpleadoService(id);
+    const consulta = await obtenerMedicamentosProveedores();
     result = consulta;
     res.status(200).json({
       message: `se han encontrado ${result.length} resultados`,
@@ -14,4 +13,4 @@ const obtenerEmpleadosController = async (req, res, next) => {
     res.status(500).json(error.stack);
   }
 };
-export { obtenerEmpleadosController };
+export { obtenerMedicamentosProveedoresController };
