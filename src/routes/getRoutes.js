@@ -5,6 +5,7 @@ import {
   obtenerMedicamentosProveedor1Controller,
   obtenerMedicamentosProveedorController,
   obtenerMedicamentosProveedoresController,
+  obtenerPacientesParacetamolController,
   obtenerRecetas2023Controller,
   obtenerRecetasDraController,
   obtenerVentasParacetamolController,
@@ -121,6 +122,16 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareMedicamentos,
     obtenerMedicamentoCaroController
+  );
+  //!13. Pacientes que han comprado Paracetamol
+  router.get(
+    "/obtenerPacientesParacetamol",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareFacturaVenta,
+    obtenerPacientesParacetamolController
   );
   return router;
 };

@@ -45,6 +45,10 @@ const obtenerMedicamentosCaro = async () => {
   const medicamento = new Medicamentos();
   return await medicamento.obtenerMedicamentosCaro();
 };
+const obtenerPacientesParacetamol = async () => {
+  const factura = new FacturaVenta();
+  return await factura.obtenerClientesParacetamol();
+};
 export {
   obtenerMedicamentosProveedores,
   obtenerMedicamentosProveedor1,
@@ -56,4 +60,5 @@ export {
   obtenerMedicamentosProveedor,
   obtenerRecetasDra,
   obtenerMedicamentosCaro,
+  obtenerPacientesParacetamol,
 };

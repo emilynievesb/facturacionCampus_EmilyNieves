@@ -157,5 +157,62 @@ class FacturaVenta {
       }
     }
   }
+  async obtenerClientesParacetamol() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $lookup: {
+              from: "recetas",
+              localField: "idReceta",
+              foreignField: "idReceta",
+              as: "DatosReceta",
+            },
+          },
+          { $unwind: "$DatosReceta" },
+          {
+            $lookup: {
+              from: "medicamentos",
+              localField: "DatosReceta.medicamentos.idMedicamento",
+              foreignField: "idMedicamento",
+              as: "DatosMedicamentos",
+            },
+          },
+          { $unwind: "$DatosMedicamentos" },
+          {
+            $lookup: {
+              from: "pacientes",
+              localField: "DatosReceta.idPaciente",
+              foreignField: "idPaciente",
+              as: "DatosPacientes",
+            },
+          },
+          { $unwind: "$DatosPacientes" },
+          {
+            $project: {
+              Paciente: "$DatosPacientes",
+              MedicamentoNombre: "$DatosMedicamentos.nombreComercial",
+            },
+          },
+          {
+            $match: { MedicamentoNombre: "Paracetamol" },
+          },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
 }
 export { FacturaVenta };
