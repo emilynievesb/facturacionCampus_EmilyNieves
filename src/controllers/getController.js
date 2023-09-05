@@ -1,5 +1,6 @@
 import {
   obtenerMedicamentosCaducen2023,
+  obtenerMedicamentosCaro,
   obtenerMedicamentosProveedor,
   obtenerMedicamentosProveedor1,
   obtenerMedicamentosProveedores,
@@ -107,11 +108,38 @@ const obtenerVentasTotalController = async (req, res, next) => {
     res.status(500).json(error.stack);
   }
 };
+const obtenerMedicamentosProveedorController = async (req, res, next) => {
+  try {
+    let result;
+    const consulta = await obtenerMedicamentosProveedor();
+    result = consulta;
+    res.status(200).json({
+      message: `se han encontrado ${result.length} resultados`,
+      result,
+    });
+  } catch (error) {
+    res.status(500).json(error.stack);
+  }
+};
 
 const obtenerRecetasDraController = async (req, res, next) => {
   try {
     let result;
     const consulta = await obtenerRecetasDra();
+    result = consulta;
+    res.status(200).json({
+      message: `se han encontrado ${result.length} resultados`,
+      result,
+    });
+  } catch (error) {
+    res.status(500).json(error.stack);
+  }
+};
+
+const obtenerMedicamentoCaroController = async (req, res, next) => {
+  try {
+    let result;
+    const consulta = await obtenerMedicamentosCaro();
     result = consulta;
     res.status(200).json({
       message: `se han encontrado ${result.length} resultados`,
@@ -131,4 +159,5 @@ export {
   obtenerVentasTotalController,
   obtenerMedicamentosProveedorController,
   obtenerRecetasDraController,
+  obtenerMedicamentoCaroController,
 };

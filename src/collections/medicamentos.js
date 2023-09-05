@@ -153,5 +153,41 @@ class Medicamentos {
       }
     }
   }
+  async obtenerMedicamentosCaro() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $sort: { precioUnidad: -1 },
+          },
+          { $limit: 1 },
+          {
+            $project: {
+              Medicamento: {
+                IdMedicamento: "$idMedicamento",
+                NombreComercial: "$nombreComercial",
+                Lote: "$numeroLote",
+                FechaCaducidad: "$fechaCaducidad",
+                PrecioUnitario: "$precioUnidad",
+              },
+            },
+          },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
 }
 export { Medicamentos };

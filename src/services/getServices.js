@@ -33,10 +33,17 @@ const obtenerVentasTotal = async () => {
   const ventas = new FacturaVenta();
   return await ventas.obtenerVentasTotal();
 };
-
+const obtenerMedicamentosProveedor = async () => {
+  const ventas = new FacturaVenta();
+  return await ventas.obtenerMedicamentosProveedor();
+};
 const obtenerRecetasDra = async () => {
   const receta = new Recetas();
   return await receta.obtenerRecetasDra();
+};
+const obtenerMedicamentosCaro = async () => {
+  const medicamento = new Medicamentos();
+  return await medicamento.obtenerMedicamentosCaro();
 };
 export {
   obtenerMedicamentosProveedores,
@@ -48,4 +55,5 @@ export {
   obtenerVentasTotal,
   obtenerMedicamentosProveedor,
   obtenerRecetasDra,
+  obtenerMedicamentosCaro,
 };
