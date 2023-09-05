@@ -8,7 +8,7 @@ async function connectionDB() {
     return dbConnection;
   }
   try {
-    const url = `mongodb+srv://${db.user}:${db.pass}@cluster0.wibpscy.mongodb.net/${db.dbname}`;
+    const url = `mongodb+srv://${db.user}:${db.pass}@cluster0.ft2tk2a.mongodb.net/${db.dbname}`;
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
