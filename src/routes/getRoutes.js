@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { obtenerMedicamentosProveedoresController } from "../controllers/getController.js";
+import {
+  obtenerMedicamentosProveedor1Controller,
+  obtenerMedicamentosProveedoresController,
+} from "../controllers/getController.js";
 import { limitPets, limitSize } from "../utils/limit.js";
 import {
   authorizationMiddleware,
@@ -17,6 +20,16 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareMedicamentos,
     obtenerMedicamentosProveedoresController
+  );
+  //!3. Medicamentos comprados al 'Proveedor A'
+  router.get(
+    "/obtenerMedicamentosProveedor",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareMedicamentos,
+    obtenerMedicamentosProveedor1Controller
   );
   return router;
 };

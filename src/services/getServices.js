@@ -1,7 +1,11 @@
-import { Empleado } from "../colections/prueba.js";
+import { Medicamentos } from "../collections/medicamentos.js";
 
-const obtenerEmpleadoService = async (id) => {
-  const empleado = new Empleado();
-  return await empleado.obtenerEmpleado(id);
+const obtenerMedicamentosProveedores = async () => {
+  const medicamentos = new Medicamentos();
+  return await medicamentos.obtenerMedicamentosProveedores();
 };
-export { obtenerEmpleadoService };
+const obtenerMedicamentosProveedor1 = async () => {
+  const medicamentos = new Medicamentos();
+  return await medicamentos.obtenerMedicamentosProveedor1();
+};
+export { obtenerMedicamentosProveedores, obtenerMedicamentosProveedor1 };

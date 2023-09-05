@@ -63,5 +63,56 @@ class Medicamentos {
       }
     }
   }
+  async obtenerMedicamentosProveedor1() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $lookup: {
+              from: "proveedores",
+              localField: "idProveedor",
+              foreignField: "idProveedor",
+              as: "DatosProveedor",
+            },
+          },
+
+          { $unwind: "$DatosProveedor" },
+          {
+            $project: {
+              Medicamento: {
+                IdMedicamento: "$idMedicamento",
+                NombreComercial: "$nombreComercial",
+                Lote: "$numeroLote",
+                FechaCaducidad: "$fechaCaducidad",
+                PrecioUnitario: "$precioUnidad",
+              },
+              NITProveedor: "$DatosProveedor.nit",
+              RazonSocialProveedor: "$DatosProveedor.razonSocial",
+              DireccionProveedor: "$DatosProveedor.direccion",
+              TelefonoProveedor: "$DatosProveedor.telefono",
+            },
+          },
+          {
+            $match: {
+              RazonSocialProveedor: "Proveedor 1",
+            },
+          },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
 }
 export { Medicamentos };
