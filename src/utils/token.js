@@ -3,10 +3,15 @@ import { plainToClass, classToPlain } from "class-transformer";
 import dotenv from "dotenv";
 import { Router } from "express";
 import { SignJWT, jwtVerify } from "jose";
-import { Historiales } from "../collections/historiales.js";
-import { Bodegas } from "../collections/bodegas.js";
+import { Compras } from "../collections/compras.js";
+import { Empleados } from "../collections/empleados.js";
+import { FacturaVenta } from "../collections/facturaVenta.js";
 import { Inventarios } from "../collections/inventarios.js";
-import { Productos } from "../collections/productos.js";
+import { Medicamentos } from "../collections/medicamentos.js";
+import { Medicos } from "../collections/medicos.js";
+import { Pacientes } from "../collections/pacientes.js";
+import { Proveedores } from "../collections/proveedores.js";
+import { Recetas } from "../collections/recetas.js";
 
 dotenv.config();
 const appToken = Router();
@@ -14,12 +19,16 @@ const appToken = Router();
 appToken.use("/:colletion", async (req, res) => {
   try {
     const { colletion } = req.params;
-    console.log(colletion);
     const classMappings = {
-      bodegas: Bodegas,
-      historiales: Historiales,
+      compras: Compras,
+      empleados: Empleados,
+      facturaVenta: FacturaVenta,
       inventarios: Inventarios,
-      productos: Productos,
+      medicamentos: Medicamentos,
+      medicos: Medicos,
+      pacientes: Pacientes,
+      proveedores: Proveedores,
+      recetas: Recetas,
     };
     const ClassType = classMappings[colletion];
     if (!ClassType) {
@@ -43,68 +52,6 @@ appToken.use("/:colletion", async (req, res) => {
   }
 });
 
-// !generar token con rol
-// appToken.use("/:coleccion", async (req, res) => {
-//   try {
-//     const user = new Usuarios();
-//     const { usuario, contrasena } = req.body;
-//     const rol = await user.getRol(usuario, contrasena);
-//     console.log(rol);
-//     if (rol.length == 0) {
-//       return res
-//         .status(500)
-//         .send({ message: "No existe ningun usuario con esas credenciales" });
-//     } else {
-//       let inst = plainToClass(
-//         eval(`${req.params.coleccion}DTO`),
-//         {},
-//         { ignoreDecorators: true }
-//       );
-//       const encoder = new TextEncoder();
-//       const jwtconstructor = new SignJWT(
-//         Object.assign({}, Object.assign(classToPlain(inst), rol[0]))
-//       );
-//       const jwt = await jwtconstructor
-//         .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-//         .setIssuedAt()
-//         .setExpirationTime("60h")
-//         .sign(encoder.encode(process.env.JWT_PRIVATE_KEY));
-//       req.data = jwt;
-//       res.status(201).send({ status: 201, message: jwt });
-//     }
-//   } catch (error) {
-//     // console.log(error);
-//     res
-//       .status(404)
-//       .send({
-//         status: 404,
-//         message: `${req.params.coleccion} no es una opcion valida para generar el token, porfavor revisar la lista que se provee en el readme`,
-//       });
-//   }
-// });
-
-//!verificación de rol
-
-// const rolVerificatorMiddleware = async (req, res, next) => {
-//   try {
-//     let { payload } = req.data;
-//     const { rol, ...newPayload } = payload;
-//     payload = newPayload;
-//     req.data = { payload };
-//     if (rol == "admin") {
-//       next();
-//     } else {
-//       res
-//         .status(500)
-//         .send({ message: "Este usuario no esta autorizado para este proceso" });
-//     }
-//   } catch (error) {
-//     res.status(498).send({ status: 498, token: "Token caducado" });
-//   }
-// };
-
-export { rolVerificatorMiddleware };
-
 const authorizationMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization)
@@ -122,23 +69,33 @@ const authorizationMiddleware = async (req, res, next) => {
   }
 };
 
-const contentMiddlewareBodegas = (req, res, next) => {
+const contentMiddlewareMedicamentos = (req, res, next) => {
   let { payload } = req.data;
   const { iat, exp, ...newPayload } = payload;
   payload = newPayload;
-  const inst = new Bodegas();
+  const inst = new Medicamentos();
   const classPlain = classToPlain(inst);
   let equal = JSON.stringify(classPlain) === JSON.stringify(payload);
   !equal
     ? res.status(406).send({ status: 406, message: "No Autorizado" })
     : next();
 };
-
-const contentMiddlewareHistoriales = (req, res, next) => {
+const contentMiddlewareRecetas = (req, res, next) => {
   let { payload } = req.data;
   const { iat, exp, ...newPayload } = payload;
   payload = newPayload;
-  const inst = new Historiales();
+  const inst = new Recetas();
+  const classPlain = classToPlain(inst);
+  let equal = JSON.stringify(classPlain) === JSON.stringify(payload);
+  !equal
+    ? res.status(406).send({ status: 406, message: "No Autorizado" })
+    : next();
+};
+const contentMiddlewareFacturaVenta = (req, res, next) => {
+  let { payload } = req.data;
+  const { iat, exp, ...newPayload } = payload;
+  payload = newPayload;
+  const inst = new FacturaVenta();
   const classPlain = classToPlain(inst);
   let equal = JSON.stringify(classPlain) === JSON.stringify(payload);
   !equal
@@ -158,23 +115,11 @@ const contentMiddlewareInventarios = (req, res, next) => {
     : next();
 };
 
-const contentMiddlewareProductos = (req, res, next) => {
-  let { payload } = req.data;
-  const { iat, exp, ...newPayload } = payload;
-  payload = newPayload;
-  const inst = new Productos();
-  const classPlain = classToPlain(inst);
-  let equal = JSON.stringify(classPlain) === JSON.stringify(payload);
-  !equal
-    ? res.status(406).send({ status: 406, message: "No Autorizado" })
-    : next();
-};
-
 export {
   appToken,
   authorizationMiddleware,
-  contentMiddlewareBodegas,
-  contentMiddlewareProductos,
+  contentMiddlewareMedicamentos,
+  contentMiddlewareRecetas,
+  contentMiddlewareFacturaVenta,
   contentMiddlewareInventarios,
-  contentMiddlewareHistoriales,
 };
