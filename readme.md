@@ -482,4 +482,46 @@ Los datos acontinuación son netamente ejemplos de lo que podrían contener los 
       }
       ```
 
+1.  Pacientes que han comprado Paracetamol
+
+    - Authorization: `http://127.20.20.1:5000/token/facturaVenta`
+    - URL: `http://127.20.20.1:5000/api/get/obtenerPacientesParacetamol`
+    - Método: `GET`
+    - Datos de entrada (body): Ninguno.
+    - Datos de salida:
+
+      ```json
+      {
+        "message": "se han encontrado 2 resultados",
+        "result": [
+          {
+            "_id": "64f748646f3e6be503d3bf26",
+            "Paciente": {
+              "_id": "64f7485c6f3e6be503d3bef0",
+              "idPaciente": 1,
+              "documento": 777777777,
+              "nombreCompleto": "Emily Nieves",
+              "fechaNacimiento": "1970-01-01T00:00:00.000Z",
+              "direccion": "Calle 100 #36-42",
+              "telefono": 3161616111
+            },
+            "MedicamentoNombre": "Paracetamol"
+          },
+          {
+            "_id": "64f748646f3e6be503d3bf27",
+            "Paciente": {
+              "_id": "64f7485c6f3e6be503d3bef1",
+              "idPaciente": 2,
+              "documento": 789456123,
+              "nombreCompleto": "Tatiana Ramirez",
+              "fechaNacimiento": "1970-01-01T00:00:00.000Z",
+              "direccion": "Calle 100 #36-42",
+              "telefono": 3161616111
+            },
+            "MedicamentoNombre": "Paracetamol"
+          }
+        ]
+      }
+      ```
+
 #### Autora: Emily Nieves
