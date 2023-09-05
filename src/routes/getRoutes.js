@@ -4,11 +4,13 @@ import {
   obtenerMedicamentosProveedoresController,
   obtenerRecetas2023Controller,
   obtenerVentasParacetamolController,
+  oobtenerStockMenorController,
 } from "../controllers/getController.js";
 import { limitPets, limitSize } from "../utils/limit.js";
 import {
   authorizationMiddleware,
   contentMiddlewareFacturaVenta,
+  contentMiddlewareInventarios,
   contentMiddlewareMedicamentos,
   contentMiddlewareRecetas,
 } from "../utils/token.js";
@@ -54,6 +56,16 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareFacturaVenta,
     obtenerVentasParacetamolController
+  );
+  //!1. Obtener todos los medicamentos con menos de 50 unidades en stock
+  router.get(
+    "/obtenerStockMenor",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareInventarios,
+    oobtenerStockMenorController
   );
   return router;
 };

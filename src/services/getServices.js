@@ -1,4 +1,5 @@
 import { FacturaVenta } from "../collections/facturaVenta.js";
+import { Inventarios } from "../collections/inventarios.js";
 import { Medicamentos } from "../collections/medicamentos.js";
 import { Recetas } from "../collections/recetas.js";
 
@@ -19,9 +20,15 @@ const obtenerVentasParacetamol = async () => {
   return await facturaVenta.obtenerVentasParacetamol();
 };
 
+const obtenerStockMenor = async () => {
+  const stock = new Inventarios();
+  return await stock.obtenerStockMenor();
+};
+
 export {
   obtenerMedicamentosProveedores,
   obtenerMedicamentosProveedor1,
   obtenerRecetas2023,
   obtenerVentasParacetamol,
+  obtenerStockMenor,
 };
