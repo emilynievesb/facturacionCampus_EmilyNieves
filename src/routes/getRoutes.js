@@ -2,11 +2,13 @@ import { Router } from "express";
 import {
   obtenerMedicamentosProveedor1Controller,
   obtenerMedicamentosProveedoresController,
+  obtenerRecetas2023Controller,
 } from "../controllers/getController.js";
 import { limitPets, limitSize } from "../utils/limit.js";
 import {
   authorizationMiddleware,
   contentMiddlewareMedicamentos,
+  contentMiddlewareRecetas,
 } from "../utils/token.js";
 
 const getInitRoute = () => {
@@ -30,6 +32,15 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareMedicamentos,
     obtenerMedicamentosProveedor1Controller
+  );
+  router.get(
+    "/obtenerRecetas2023",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareRecetas,
+    obtenerRecetas2023Controller
   );
   return router;
 };
