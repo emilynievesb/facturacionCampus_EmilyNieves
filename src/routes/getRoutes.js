@@ -5,6 +5,7 @@ import {
   obtenerMedicamentosProveedoresController,
   obtenerRecetas2023Controller,
   obtenerVentasParacetamolController,
+  obtenerVentasTotalController,
   oobtenerStockMenorController,
 } from "../controllers/getController.js";
 import { limitPets, limitSize } from "../utils/limit.js";
@@ -77,6 +78,16 @@ const getInitRoute = () => {
     authorizationMiddleware,
     contentMiddlewareMedicamentos,
     obtenerMedicamentosCaducen2023Controller
+  );
+  //!8. Cantidad total de dinero recaudado por las ventas de medicamentos
+  router.get(
+    "/obtenerVentasTotal",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareFacturaVenta,
+    obtenerVentasTotalController
   );
   return router;
 };

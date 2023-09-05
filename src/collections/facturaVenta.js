@@ -68,5 +68,33 @@ class FacturaVenta {
       }
     }
   }
+  async obtenerVentasTotal() {
+    try {
+      this.session = await startTransaction();
+      const connection = await this.connect();
+      const resultado = await connection
+        .aggregate([
+          {
+            $group: {
+              _id: null,
+              totalDineroDolares: { $sum: "$total" },
+            },
+          },
+          { $project: { _id: 0 } },
+        ])
+        .toArray();
+      await this.session.commitTransaction();
+      return resultado;
+    } catch (error) {
+      if (this.session) {
+        await this.session.abortTransaction();
+      }
+      throw error;
+    } finally {
+      if (this.session) {
+        this.session.endSession();
+      }
+    }
+  }
 }
 export { FacturaVenta };

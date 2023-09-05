@@ -29,6 +29,11 @@ const obtenerMedicamentosCaducen2023 = async () => {
   return await medicamentos.obtenerMedicamentosVencen2024();
 };
 
+const obtenerVentasTotal = async () => {
+  const ventas = new FacturaVenta();
+  return await ventas.obtenerVentasTotal();
+};
+
 export {
   obtenerMedicamentosProveedores,
   obtenerMedicamentosProveedor1,
@@ -36,4 +41,5 @@ export {
   obtenerVentasParacetamol,
   obtenerStockMenor,
   obtenerMedicamentosCaducen2023,
+  obtenerVentasTotal,
 };
