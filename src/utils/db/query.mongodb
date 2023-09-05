@@ -1,0 +1,937 @@
+use("facturacionCampus_EmilyNieves");
+
+db.createCollection("counters");
+db.counters.insertMany([
+  {
+    _id: "facturaVentaId",
+    seq: 0,
+  },
+  {
+    _id: "comprasId",
+    seq: 0,
+  },
+  {
+    _id: "proveedoresId",
+    seq: 0,
+  },
+  {
+    _id: "empleadosId",
+    seq: 0,
+  },
+  {
+    _id: "medicosId",
+    seq: 0,
+  },
+  {
+    _id: "pacientesId",
+    seq: 0,
+  },
+  {
+    _id: "inventariosId",
+    seq: 0,
+  },
+  {
+    _id: "medicamentosId",
+    seq: 0,
+  },
+  {
+    _id: "recetasId",
+    seq: 0,
+  },
+]);
+function getNextid(col) {
+  let ret = db.counters.findAndModify({
+    query: { _id: col + "Id" },
+    update: { $inc: { seq: 1 } },
+    new: true,
+  });
+  console.log(ret.seq);
+  return ret.seq;
+}
+
+db.createCollection("pacientes", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idPaciente",
+        "documento",
+        "nombreCompleto",
+        "fechaNacimiento",
+        "direccion",
+        "telefono",
+      ],
+      properties: {
+        idPaciente: {
+          bsonType: "int",
+          description: "Id del paciente",
+        },
+        documento: {
+          bsonType: "number",
+          description: "Documento de identidad de un paciente",
+        },
+        nombreCompleto: {
+          bsonType: "string",
+          description: "Nombre completo del paciente",
+        },
+        fechaNacimiento: {
+          bsonType: "date",
+          description: "Fecha de nacimiento del paciente",
+        },
+        direccion: {
+          bsonType: "string",
+          description: "Dirección del paciente",
+        },
+        telefono: {
+          bsonType: "number",
+          description: "Telefono de contacto del paciente",
+        },
+      },
+    },
+  },
+});
+
+db.pacientes.insertMany([
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 777777777,
+    nombreCompleto: "Emily Nieves",
+    fechaNacimiento: new Date("17-10-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 789456123,
+    nombreCompleto: "Tatiana Ramirez",
+    fechaNacimiento: new Date("25-12-1999"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 321654789,
+    nombreCompleto: "Andres Perez",
+    fechaNacimiento: new Date("18-08-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 741852963,
+    nombreCompleto: "Santiago Sanchez",
+    fechaNacimiento: new Date("20-05-2001"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 369825471,
+    nombreCompleto: "David Hernandez",
+    fechaNacimiento: new Date("19-03-2002"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 75395148,
+    nombreCompleto: "Camilo Serrano",
+    fechaNacimiento: new Date("10-07-1998"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idPaciente: getNextid("pacientes"),
+    documento: 46827193,
+    nombreCompleto: "Ruth Badillo",
+    fechaNacimiento: new Date("06-06-2006"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+]);
+
+db.createCollection("empleados", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idEmpleado",
+        "credencial",
+        "documento",
+        "nombreCompleto",
+        "fechaNacimiento",
+        "direccion",
+        "telefono",
+        "rol",
+      ],
+      properties: {
+        idEmpleado: {
+          bsonType: "int",
+          description: "Id del empleado",
+        },
+        credencial: {
+          bsonType: "string",
+          description: "Credencial de acceso del empleado",
+        },
+        documento: {
+          bsonType: "number",
+          description: "Documento de identidad de un empleado",
+        },
+        nombreCompleto: {
+          bsonType: "string",
+          description: "Nombre completo del empleado",
+        },
+        fechaNacimiento: {
+          bsonType: "date",
+          description: "Fecha de nacimiento del empleado",
+        },
+        direccion: {
+          bsonType: "string",
+          description: "Dirección del empleado",
+        },
+        telefono: {
+          bsonType: "number",
+          description: "Telefono de contacto del empleado",
+        },
+        rol: {
+          bsonType: "string",
+          description: "Rol del empleado",
+        },
+      },
+    },
+  },
+});
+
+db.empleados.insertMany([
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 777777777,
+    credencial: "adm123",
+    nombreCompleto: "Emily Nieves",
+    fechaNacimiento: new Date("17-10-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Admin",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 789456123,
+    credencial: "adm123",
+    nombreCompleto: "Tatiana Ramirez",
+    fechaNacimiento: new Date("25-12-1999"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Cajero",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 321654789,
+    credencial: "adm123",
+    nombreCompleto: "Andres Perez",
+    fechaNacimiento: new Date("18-08-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Cajero",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 741852963,
+    credencial: "adm123",
+    nombreCompleto: "Santiago Sanchez",
+    fechaNacimiento: new Date("20-05-2001"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Cajero",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 369825471,
+    credencial: "adm123",
+    nombreCompleto: "David Hernandez",
+    fechaNacimiento: new Date("19-03-2002"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Bodega",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 75395148,
+    credencial: "adm123",
+    nombreCompleto: "Camilo Serrano",
+    fechaNacimiento: new Date("10-07-1998"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Bodega",
+  },
+  {
+    idEmpleado: getNextid("empleados"),
+    documento: 46827193,
+    credencial: "adm123",
+    nombreCompleto: "Ruth Badillo",
+    fechaNacimiento: new Date("06-06-2006"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+    rol: "Bodega",
+  },
+]);
+
+db.createCollection("medicos", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idMedico",
+        "documento",
+        "nombre",
+        "apellido",
+        "fechaNacimiento",
+        "direccion",
+        "telefono",
+      ],
+      properties: {
+        idMedico: {
+          bsonType: "int",
+          description: "Id del medico",
+        },
+        documento: {
+          bsonType: "number",
+          description: "Documento de identidad de un medico",
+        },
+        nombre: {
+          bsonType: "string",
+          description: "Nombre del medico",
+        },
+        apellido: {
+          bsonType: "string",
+          description: "Apellido del medico",
+        },
+        fechaNacimiento: {
+          bsonType: "date",
+          description: "Fecha de nacimiento del medico",
+        },
+        direccion: {
+          bsonType: "string",
+          description: "Dirección del medico",
+        },
+        telefono: {
+          bsonType: "number",
+          description: "Telefono de contacto del medico",
+        },
+      },
+    },
+  },
+});
+db.medicos.insertMany([
+  {
+    idMedico: getNextid("medicos"),
+    documento: 741852987,
+    nombre: "Emily",
+    apellido: "Nieves",
+    fechaNacimiento: new Date("17-10-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 852741369,
+    nombre: "Tatiana",
+    apellido: "Martínez",
+    fechaNacimiento: new Date("25-12-1999"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 321654789,
+    nombre: "Andres",
+    apellido: "Perez",
+    fechaNacimiento: new Date("18-08-2003"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 741852963,
+    nombre: "Santiago",
+    apellido: "Sanchez",
+    fechaNacimiento: new Date("20-05-2001"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 369825471,
+    nombre: "David",
+    apellido: "Hernandez",
+    fechaNacimiento: new Date("19-03-2002"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 75395148,
+    nombre: "Camilo",
+    apellido: "Serrano",
+    fechaNacimiento: new Date("10-07-1998"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idMedico: getNextid("medicos"),
+    documento: 46827193,
+    nombre: "Ruth",
+    apellido: "Badillo",
+    fechaNacimiento: new Date("06-06-2006"),
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+]);
+
+db.createCollection("proveedores", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["idProveedor", "nit", "razonSocial", "direccion", "telefono"],
+      properties: {
+        idProveedor: {
+          bsonType: "int",
+          description: "Id del proveedor",
+        },
+        nit: {
+          bsonType: "number",
+          description: "NIT del proveedor",
+        },
+        razonSocial: {
+          bsonType: "string",
+          description: "Razon social del proveedor",
+        },
+        direccion: {
+          bsonType: "string",
+          description: "Dirección del proveedor",
+        },
+        telefono: {
+          bsonType: "number",
+          description: "Telefono del proveedor",
+        },
+      },
+    },
+  },
+});
+
+db.proveedores.insertMany([
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 741852987,
+    razonSocial: "Proveedor 1",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 852741369,
+    razonSocial: "Proveedor 2",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 321654789,
+    razonSocial: "Proveedor 3",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 741852963,
+    razonSocial: "Proveedor 4",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 369825471,
+    razonSocial: "Proveedor 5",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 75395148,
+    razonSocial: "Proveedor 6",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+  {
+    idProveedor: getNextid("proveedores"),
+    nit: 46827193,
+    razonSocial: "Proveedor 7",
+    direccion: "Calle 100 #36-42",
+    telefono: 3161616111,
+  },
+]);
+
+db.createCollection("medicamentos", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idMedicamento",
+        "nombreComercial",
+        "idProveedor",
+        "numeroLote",
+        "fechaCaducidad",
+        "precioUnidad",
+      ],
+      properties: {
+        idMedicamento: {
+          bsonType: "int",
+          description: "Id del medicamento",
+        },
+        nombreComercial: {
+          bsonType: "string",
+          description: "Nombre comercial del medicamento",
+        },
+        idProveedor: {
+          bsonType: "int",
+          description: "Id del proveedor del medicamento",
+        },
+        numeroLote: {
+          bsonType: "number",
+          description: "Lote del medicamento",
+        },
+        fechaCaducidad: {
+          bsonType: "date",
+          description: "Fecha de caducidad del medicamento",
+        },
+        precioUnidad: {
+          bsonType: "int",
+          description: "Precio unitario del medicamento",
+        },
+      },
+    },
+  },
+});
+
+db.medicamentos.insertMany([
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Paracetamol",
+    idProveedor: 1,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("17-10-2024"),
+    precioUnidad: 31,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Buscapina",
+    idProveedor: 2,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("25-12-2023"),
+    precioUnidad: 41,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Cefalexina",
+    idProveedor: 3,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("18-08-2024"),
+    precioUnidad: 35,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Noxpirin",
+    idProveedor: 4,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("20-05-2024"),
+    precioUnidad: 51,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Pax Noche",
+    idProveedor: 1,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("19-03-2023"),
+    precioUnidad: 80,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Complejo B",
+    idProveedor: 1,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("10-07-2023"),
+    precioUnidad: 79,
+  },
+  {
+    idMedicamento: getNextid("medicamentos"),
+    nombreComercial: "Vitamina C",
+    idProveedor: 4,
+    numeroLote: 3161616111,
+    fechaCaducidad: new Date("06-06-2023"),
+    precioUnidad: 74,
+  },
+]);
+
+db.createCollection("inventarios", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idInventario",
+        "idMedicamento",
+        "fechaInventario",
+        "unidades",
+      ],
+      properties: {
+        idInventario: {
+          bsonType: "int",
+          description: "Id del inventario",
+        },
+        idMedicamento: {
+          bsonType: "int",
+          description: "Id del medicamento del inventario",
+        },
+        fechaInventario: {
+          bsonType: "date",
+          description: "Fecha del inventario",
+        },
+        unidades: {
+          bsonType: "int",
+          description: "Unidades del inventario",
+        },
+      },
+    },
+  },
+});
+
+db.inventarios.insertMany([
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 1,
+    fechaInventario: new Date("17-10-2024"),
+    unidades: 69,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 2,
+    fechaInventario: new Date("25-12-2023"),
+    unidades: 46,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 3,
+    fechaInventario: new Date("18-08-2024"),
+    unidades: 60,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 4,
+    fechaInventario: new Date("20-05-2024"),
+    unidades: 57,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 5,
+    fechaInventario: new Date("19-03-2023"),
+    unidades: 30,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 6,
+    fechaInventario: new Date("10-07-2023"),
+    unidades: 11,
+  },
+  {
+    idInventario: getNextid("inventarios"),
+    idMedicamento: 7,
+    fechaInventario: new Date("06-06-2023"),
+    unidades: 40,
+  },
+]);
+
+db.createCollection("compras", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idFactura",
+        "fecha",
+        "idMedicamento",
+        "unidadesMedicamento",
+        "precioCompra",
+        "total",
+      ],
+      properties: {
+        idFactura: {
+          bsonType: "int",
+          description: "Número de factura",
+        },
+        fecha: {
+          bsonType: "date",
+          description: "Fecha de la compra",
+        },
+        idMedicamento: {
+          bsonType: "int",
+          description: "Id del medicamento",
+        },
+        unidadesMedicamento: {
+          bsonType: "int",
+          description: "Cantidad del medicamento",
+        },
+        precioCompra: {
+          bsonType: "int",
+          description: "Precio de compra del medicamento",
+        },
+        total: {
+          bsonType: "int",
+          description: "Total pagado en la factura",
+        },
+      },
+    },
+  },
+});
+
+db.compras.insertMany([
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 1,
+    unidadesMedicamento: 78,
+    precioCompra: 7,
+    total: 546,
+  },
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 2,
+    unidadesMedicamento: 74,
+    precioCompra: 7,
+    total: 518,
+  },
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 3,
+    unidadesMedicamento: 35,
+    precioCompra: 7,
+    total: 245,
+  },
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 4,
+    unidadesMedicamento: 63,
+    precioCompra: 7,
+    total: 441,
+  },
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 5,
+    unidadesMedicamento: 45,
+    precioCompra: 7,
+    total: 315,
+  },
+  {
+    idFactura: getNextid("compras"),
+    fecha: new Date("01-03-2023"),
+    idMedicamento: 6,
+    unidadesMedicamento: 8,
+    precioCompra: 7,
+    total: 56,
+  },
+]);
+
+db.createCollection("recetas", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "idReceta",
+        "idPaciente",
+        "idMedico",
+        "medicamentos",
+        "fechaReceta",
+      ],
+      properties: {
+        idReceta: {
+          bsonType: "int",
+          description: "Id de la receta",
+        },
+        idPaciente: {
+          bsonType: "int",
+          description: "Id del paciente al que se le receta",
+        },
+        idMedico: {
+          bsonType: "int",
+          description: "Id del médico que receta",
+        },
+        medicamentos: {
+          bsonType: "array",
+          items: {
+            type: "object",
+          },
+          description: "Medicamentos y unidades",
+        },
+        fechaReceta: {
+          bsonType: "date",
+          description: "Fecha de la receta",
+        },
+      },
+    },
+  },
+});
+
+db.recetas.insertMany([
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2023"),
+    idPaciente: 1,
+    idMedico: 1,
+    medicamentos: [
+      {
+        idMedicamento: 1,
+        cantidad: 3,
+      },
+    ],
+  },
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2023"),
+    idPaciente: 2,
+    idMedico: 2,
+    medicamentos: [
+      {
+        idMedicamento: 1,
+        cantidad: 3,
+      },
+      {
+        idMedicamento: 2,
+        cantidad: 3,
+      },
+    ],
+  },
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2022"),
+    idPaciente: 1,
+    idMedico: 3,
+    medicamentos: [
+      {
+        idMedicamento: 2,
+        cantidad: 3,
+      },
+    ],
+  },
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2022"),
+    idPaciente: 3,
+    idMedico: 4,
+    medicamentos: [
+      {
+        idMedicamento: 3,
+        cantidad: 3,
+      },
+    ],
+  },
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2023"),
+    idPaciente: 4,
+    idMedico: 5,
+    medicamentos: [
+      {
+        idMedicamento: 2,
+        cantidad: 3,
+      },
+    ],
+  },
+  {
+    idReceta: getNextid("recetas"),
+    fechaReceta: new Date("01-03-2023"),
+    idPaciente: 5,
+    idMedico: 6,
+    medicamentos: [
+      {
+        idMedicamento: 5,
+        cantidad: 3,
+      },
+    ],
+  },
+]);
+
+db.createCollection("facturaVenta", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["idFactura", "idEmpleado", "fecha", "idReceta", "total"],
+      properties: {
+        idFactura: {
+          bsonType: "int",
+          description: "Número de factura",
+        },
+        idEmpleado: {
+          bsonType: "int",
+          description: "Id empleado que factura",
+        },
+        fecha: {
+          bsonType: "date",
+          description: "Fecha de la creación de factura",
+        },
+        idReceta: {
+          bsonType: "int",
+          description: "Id de la receta a facturar",
+        },
+        total: {
+          bsonType: "int",
+          description: "Total a pagar en la factura",
+        },
+      },
+    },
+  },
+});
+
+db.facturaVenta.insertMany([
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("01-03-2023"),
+    idReceta: 1,
+    total: 89,
+  },
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("02-03-2023"),
+    idReceta: 2,
+    total: 165,
+  },
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("01-03-2023"),
+    idReceta: 3,
+    total: 89,
+  },
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("02-03-2023"),
+    idReceta: 4,
+    total: 165,
+  },
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("02-03-2023"),
+    idReceta: 5,
+    total: 165,
+  },
+  {
+    idFactura: getNextid("facturaVenta"),
+    idEmpleado: 1,
+    fecha: new Date("02-03-2023"),
+    idReceta: 6,
+    total: 165,
+  },
+]);
