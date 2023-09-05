@@ -2,8 +2,10 @@ import { Router } from "express";
 import {
   obtenerMedicamentosCaducen2023Controller,
   obtenerMedicamentosProveedor1Controller,
+  obtenerMedicamentosProveedorController,
   obtenerMedicamentosProveedoresController,
   obtenerRecetas2023Controller,
+  obtenerRecetasDraController,
   obtenerVentasParacetamolController,
   obtenerVentasTotalController,
   oobtenerStockMenorController,
@@ -79,15 +81,35 @@ const getInitRoute = () => {
     contentMiddlewareMedicamentos,
     obtenerMedicamentosCaducen2023Controller
   );
-  //!8. Cantidad total de dinero recaudado por las ventas de medicamentos
+  //!7. Total de medicamentos vendidos por cada proveedor
   router.get(
-    "/obtenerVentasTotal",
+    "/obtenerMedicamentosPorProveedor",
     limitPets,
     limitSize,
     //validación rol,
     authorizationMiddleware,
     contentMiddlewareFacturaVenta,
-    obtenerVentasTotalController
+    obtenerMedicamentosProveedorController
+  );
+  //!8. Cantidad total de dinero recaudado por las ventas de medicamentos
+  // router.get(
+  //   "/obtenerVentasTotal",
+  //   limitPets,
+  //   limitSize,
+  //   //validación rol,
+  //   authorizationMiddleware,
+  //   contentMiddlewareFacturaVenta,
+  //   obtenerVentasTotalController
+  // );
+  //!9. Recetas prescritas por el Dr. Martínez
+  router.get(
+    "/obtenerRecetasDra",
+    limitPets,
+    limitSize,
+    //validación rol,
+    authorizationMiddleware,
+    contentMiddlewareFacturaVenta,
+    obtenerRecetasDraController
   );
   return router;
 };

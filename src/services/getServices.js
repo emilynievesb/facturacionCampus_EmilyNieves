@@ -34,6 +34,10 @@ const obtenerVentasTotal = async () => {
   return await ventas.obtenerVentasTotal();
 };
 
+const obtenerRecetasDra = async () => {
+  const receta = new Recetas();
+  return await receta.obtenerRecetasDra();
+};
 export {
   obtenerMedicamentosProveedores,
   obtenerMedicamentosProveedor1,
@@ -42,4 +46,6 @@ export {
   obtenerStockMenor,
   obtenerMedicamentosCaducen2023,
   obtenerVentasTotal,
+  obtenerMedicamentosProveedor,
+  obtenerRecetasDra,
 };
