@@ -45,7 +45,6 @@ function getNextid(col) {
     update: { $inc: { seq: 1 } },
     new: true,
   });
-  console.log(ret.seq);
   return ret.seq;
 }
 
@@ -518,7 +517,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Paracetamol",
     idProveedor: 1,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("17-10-2024"),
+    fechaCaducidad: new Date("2024-10-17"),
     precioUnidad: 31,
   },
   {
@@ -526,7 +525,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Buscapina",
     idProveedor: 2,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("25-12-2023"),
+    fechaCaducidad: new Date("2023-12-25"),
     precioUnidad: 41,
   },
   {
@@ -534,7 +533,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Cefalexina",
     idProveedor: 3,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("18-08-2024"),
+    fechaCaducidad: new Date("2024-08-18"),
     precioUnidad: 35,
   },
   {
@@ -542,7 +541,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Noxpirin",
     idProveedor: 4,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("20-05-2024"),
+    fechaCaducidad: new Date("2024-05-20"),
     precioUnidad: 51,
   },
   {
@@ -550,7 +549,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Pax Noche",
     idProveedor: 1,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("19-03-2023"),
+    fechaCaducidad: new Date("2023-03-19"),
     precioUnidad: 80,
   },
   {
@@ -558,7 +557,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Complejo B",
     idProveedor: 1,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("10-07-2023"),
+    fechaCaducidad: new Date("2023-07-10"),
     precioUnidad: 79,
   },
   {
@@ -566,7 +565,7 @@ db.medicamentos.insertMany([
     nombreComercial: "Vitamina C",
     idProveedor: 4,
     numeroLote: 3161616111,
-    fechaCaducidad: new Date("06-06-2023"),
+    fechaCaducidad: new Date("2024-06-06"),
     precioUnidad: 74,
   },
 ]);
